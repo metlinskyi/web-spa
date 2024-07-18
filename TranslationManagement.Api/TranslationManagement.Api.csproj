@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Mvc" Version="6.4.1" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="6.4.0" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.24" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.24" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.24" />
@@ -20,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\External.ThirdParty.Services\External.ThirdParty.Services.csproj" />
+    <ProjectReference Include="..\TranslationManagement\TranslationManagement.csproj" />
+    <ProjectReference Include="..\TranslationManagement.Data\TranslationManagement.Data.csproj" />
   </ItemGroup>
 
 </Project>
