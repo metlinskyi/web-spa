@@ -11,6 +11,7 @@ using System.Xml.Linq;
 
 namespace TranslationManagement.Api.Controllers;
 
+using System.Threading.Tasks;
 using Data;
 using Data.Management;
 using Models;
@@ -48,7 +49,7 @@ public class TranslationJobController : ApiController
     }
 
     [HttpPost]
-    public bool CreateJob(TranslationJobModel job)
+    public async Task<bool> CreateJob(TranslationJobModel job)
     {
         var record = _mapper.Map<TranslationRecord>(job);
         record = record with
@@ -56,15 +57,15 @@ public class TranslationJobController : ApiController
             Price = _priceCalculator.Translation(PriceType.PerCharacter, job.OriginalContent)
         };
         
-        _unitOfWork
+        await _unitOfWork
             .RepositoryFor<TranslationRecord>()
-            .Insert(record);
+            .InsertAsync(record);
 
         return _unitOfWork.Save() > 0;
     }
 
     [HttpPost]
-    public bool CreateJobWithFile(IFormFile file, string customer)
+    public async Task<bool> CreateJobWithFile(IFormFile file, string customer)
     {
         using var reader = new StreamReader(file.OpenReadStream());
         string content;
@@ -92,7 +93,7 @@ public class TranslationJobController : ApiController
             CustomerName = customer,
         };
 
-        return CreateJob(newJob);
+        return await CreateJob(newJob);
     }
 
     [HttpPost]

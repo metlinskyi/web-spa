@@ -22,7 +22,7 @@ internal class Repository<TEntity> : IRepository<TEntity>
         {
             query = query.Include(includeProperty);
         }
-        
+
         return query;
     }
 
@@ -31,9 +31,19 @@ internal class Repository<TEntity> : IRepository<TEntity>
         return dbSet.Find(id);
     }
 
+    public virtual Task<TEntity?> GetByIDAsync(Guid id)
+    {
+        return dbSet.FindAsync(id).AsTask();
+    }
+
     public virtual void Insert(TEntity entity)
     {
         dbSet.Add(entity);
+    }
+
+    public virtual Task InsertAsync(TEntity entity)
+    {
+       return dbSet.AddAsync(entity).AsTask();
     }
 
     public virtual void Delete(Guid id)

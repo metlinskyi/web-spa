@@ -33,7 +33,7 @@ Update db
 ```
 
 
-    dotnet ef migrations add PriceValues \
+    dotnet ef migrations add FixNaming \
         -o "Management/Migrations" \
         -c "AppDbContext"  \
         -p "TranslationManagement.Data/TranslationManagement.Data.csproj" \

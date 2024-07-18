@@ -10,7 +10,11 @@ public interface IRepository<TEntity> : IRepository where TEntity : Entity
 
     TEntity? GetByID(Guid id);    
 
-    void Insert(TEntity entity);    
+    Task<TEntity?> GetByIDAsync(Guid id);
+
+    void Insert(TEntity entity);
+        
+    Task InsertAsync(TEntity entity);
 
     void Delete(Guid id);
 

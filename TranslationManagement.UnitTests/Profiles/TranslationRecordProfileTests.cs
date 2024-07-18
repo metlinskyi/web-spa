@@ -20,13 +20,16 @@ public class TranslationRecordProfileTests
 
         var record = new TranslationRecord(
             Guid.Parse(id),
-            Guid.Parse(customerId),
             originalContent,
             translatedContent);
         record = record with{
             Price = price
         };
 
-        var actual = mapper.Map<TranslationRecord, TranslationJobModel>(record);
+        var model = mapper.Map<TranslationRecord, TranslationJobModel>(record);
+
+        Assert.That(model.Id == record.Id.ToString());
+        Assert.That(model.OriginalContent == record.OriginalContent);   
+        Assert.That(model.TranslatedContent == record.TranslatedContent);  
     }
 }
