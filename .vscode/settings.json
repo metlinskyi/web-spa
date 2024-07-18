@@ -1,0 +1,4 @@
+{
+    "dotnet-test-explorer.testProjectPath": "**/*UnitTests.csproj",
+    "dotnet-test-explorer.autoWatch": false
+}

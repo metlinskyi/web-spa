@@ -1,3 +1,7 @@
+
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("TranslationManagement.UnitTests")]
+
 namespace TranslationManagement;
 
 using Microsoft.Extensions.DependencyInjection;
