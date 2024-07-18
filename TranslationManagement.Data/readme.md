@@ -1,5 +1,5 @@
 
-Add new migration
+# Add new migration
 ```dotnetcli
 
     dotnet ef migrations add <Name> \
@@ -16,7 +16,7 @@ Add new migration
 
 ```
 
-Update db
+# Update db
 ```dotnetcli
 
     dotnet ef database update --verbose \
@@ -31,10 +31,3 @@ Update db
         --startup-project TranslationManagement.Api/TranslationManagement.Api.csproj \
         -- "Data Source=TranslationIdentityDatabase.db" 
 ```
-
-
-    dotnet ef migrations add FixNaming \
-        -o "Management/Migrations" \
-        -c "AppDbContext"  \
-        -p "TranslationManagement.Data/TranslationManagement.Data.csproj" \
-        -- "Data Source=TranslationAppDatabase.db" 

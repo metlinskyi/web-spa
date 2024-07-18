@@ -7,9 +7,11 @@ using Microsoft.OpenApi.Models;
 
 namespace TranslationManagement.Api;
 
+using System.IO;
 using Data;
 using Data.Management;
 using External.ThirdParty.Services;
+using Microsoft.Extensions.FileProviders;
 using Notifications;
 using TranslationManagement.Payments;
 
@@ -54,7 +56,8 @@ public class Startup
     {
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TranslationManagement.Api v1"));
-
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
         app.UseRouting();
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
