@@ -12,7 +12,7 @@ public static class Extensions
     public static IServiceCollection AddDb(this IServiceCollection services, string connectionString)
     {
         services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddTransient<IUnitOfWork, UnitOfWork>();
 
         return services.AddDbContext<AppDbContext>(options => {
                 options.UseSqlite(connectionString);

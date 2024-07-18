@@ -11,11 +11,7 @@ public class Program
     public static void Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
-
-        // automatic startup database migration
         var scope = host.Services.GetService<IServiceScopeFactory>().CreateScope();
-        //scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.Migrate();
-
         host.Run();
     }
 

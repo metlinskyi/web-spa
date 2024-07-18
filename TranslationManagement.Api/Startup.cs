@@ -9,6 +9,7 @@ namespace TranslationManagement.Api;
 
 using Data;
 using Data.Management;
+using External.ThirdParty.Services;
 using Notifications;
 using TranslationManagement.Payments;
 
@@ -43,8 +44,8 @@ public class Startup
         });
         services.AddDb("Data Source=TranslationAppDatabase.db");
         services.AddDbIdentity("Data Source=TranslationIdentityDatabase.db");
-        services.AddSingleton<IPriceCalculator, PriceCalculator>();
-
+        services.AddTransient<IPriceCalculator, PriceCalculator>();
+        services.AddTransient<INotificationService, UnreliableNotificationService>();
         services.AddTransient<INotification<JobRecrod>, JobNotification>();
     }
 

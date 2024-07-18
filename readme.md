@@ -43,17 +43,4 @@ Commit to master, follow usual git culture.
 Please include a note regarding how to run.
 
 
-
-dotnet add TranslationManagement.Api/TranslationManagement.Api.csproj  package Asp.Versioning.Http
-
-
-
-dotnet sln TranslationManagement.sln add TranslationManagement.Data/TranslationManagement.Data.csproj 
-
-
-
-dotnet add TranslationManagement.Api/TranslationManagement.Api.csproj package AutoMapper 
-
-
-
-dotnet add TranslationManagement.Data/TranslationManagement.Data.csproj package EntityFrameworkCore.Triggered
+dotnet run --project TranslationManagement/TranslationManagement.Api.csproj
