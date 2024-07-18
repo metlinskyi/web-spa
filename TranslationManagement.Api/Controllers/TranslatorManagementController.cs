@@ -76,7 +76,10 @@ public class TranslatorManagementController : ApiController
             .RepositoryFor<TranslatorRecord>()
             .GetByID(translatorId);
 
-        translator.Status = newStatus;
+        translator = translator with 
+        {
+            Status = newStatus
+        };
 
         return _unitOfWork.Save() > 0 
             ? "updated" 

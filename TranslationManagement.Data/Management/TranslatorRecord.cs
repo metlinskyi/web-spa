@@ -7,5 +7,5 @@ public sealed record TranslatorRecord
     string HourlyRate,
     string CreditCardNumber
 ) : Entity(Id) {
-    public TranslatorStatus Status { get; set;}
+    public TranslatorStatus Status { get; init; }
 }

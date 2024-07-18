@@ -4,5 +4,5 @@ public sealed record JobRecrod
 (
     Guid Id
 ) : Entity(Id){
-    public JobStatus Status { get; set; }
+    public JobStatus Status { get; init; }
 }

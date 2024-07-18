@@ -5,8 +5,8 @@ public sealed record TranslationRecord
     Guid Id,
     Guid CustomerId,
     string OriginalContent,
-    string TranslatedContent,
-    JobRecrod Job
+    string TranslatedContent
 ) : Entity(Id){
-    public decimal Price { get; set; }
+    public JobRecrod Job { get; init; }
+    public decimal Price { get; init; }
 }

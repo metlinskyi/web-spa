@@ -10,6 +10,7 @@ namespace TranslationManagement.Api;
 using Data;
 using Data.Management;
 using Notifications;
+using TranslationManagement.Payments;
 
 public class Startup
 {
@@ -42,7 +43,7 @@ public class Startup
         });
         services.AddDb("Data Source=TranslationAppDatabase.db");
         services.AddDbIdentity("Data Source=TranslationIdentityDatabase.db");
-        services.AddPayments();
+        services.AddSingleton<IPriceCalculator, PriceCalculator>();
 
         services.AddTransient<INotification<JobRecrod>, JobNotification>();
     }

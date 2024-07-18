@@ -1,4 +1,19 @@
 {
     "dotnet-test-explorer.testProjectPath": "**/*UnitTests.csproj",
-    "dotnet-test-explorer.autoWatch": false
+    "dotnet-test-explorer.autoWatch": false,
+    "sqltools.useNodeRuntime": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "App",
+            "database": "${workspaceFolder:tm}/TranslationManagement.Api/TranslationAppDatabase.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "User",
+            "database": "${workspaceFolder:tm}/TranslationManagement.Api/TranslationIdentityDatabase.db"
+        }
+    ]
 }

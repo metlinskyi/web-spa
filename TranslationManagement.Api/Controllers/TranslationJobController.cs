@@ -51,8 +51,11 @@ public class TranslationJobController : ApiController
     public bool CreateJob(TranslationJobModel job)
     {
         var record = _mapper.Map<TranslationRecord>(job);
-        record.Price = _priceCalculator.Translation(PriceType.PerCharacter, job.OriginalContent);
-
+        record = record with
+        {
+            Price = _priceCalculator.Translation(PriceType.PerCharacter, job.OriginalContent)
+        };
+        
         _unitOfWork
             .RepositoryFor<TranslationRecord>()
             .Insert(record);
@@ -114,7 +117,10 @@ public class TranslationJobController : ApiController
             throw new ArgumentException("invalid status change");
         }
 
-        job.Status = newStatus;
+        job = job with
+        {
+            Status = newStatus
+        };
 
         return _unitOfWork.Save() > 0 
             ? "updated" 
