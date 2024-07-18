@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using Moq;
 
-
 namespace TranslationManagement.UnitTests.Payments;
 
 using Mocks;

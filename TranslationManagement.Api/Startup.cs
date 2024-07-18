@@ -42,6 +42,7 @@ public class Startup
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "TranslationManagement.Api", Version = "v1" });
         });
+        services.AddAutoMapper(GetType().Assembly);
         services.AddDb("Data Source=TranslationAppDatabase.db");
         services.AddDbIdentity("Data Source=TranslationIdentityDatabase.db");
         services.AddTransient<IPriceCalculator, PriceCalculator>();
