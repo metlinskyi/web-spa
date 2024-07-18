@@ -44,7 +44,7 @@ Please include a note regarding how to run.
 
 # Run for dev
 ```dotnetcli
-    dotnet run --project TranslationManagement/TranslationManagement.Api.csproj
+    dotnet run --project TranslationManagement.Api/TranslationManagement.Api.csproj
 ```
 
 # Docker

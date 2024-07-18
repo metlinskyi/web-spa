@@ -11,7 +11,6 @@ public class Program
     public static void Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
-        var scope = host.Services.GetService<IServiceScopeFactory>().CreateScope();
         host.Run();
     }
 

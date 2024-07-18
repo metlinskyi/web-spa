@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace TranslationManagement.Api.Controlers;
 
+using System.Threading.Tasks;
 using Data;
 using Data.Management;
 using Models;
@@ -52,15 +53,15 @@ public class TranslatorManagementController : ApiController
     }
 
     [HttpPost]
-    public bool AddTranslator(TranslatorModel translator)
+    public async Task<bool> AddTranslator(TranslatorModel translator)
     {
         var record = _mapper.Map<TranslatorModel, TranslatorRecord>(translator);
 
-        _unitOfWork
+        await _unitOfWork
             .RepositoryFor<TranslatorRecord>()
-            .Insert(record);
+            .InsertAsync(record);
 
-        return _unitOfWork.Save() > 0;
+        return await _unitOfWork.SaveAsync() > 0;
     }
     
     [HttpPost]
@@ -72,17 +73,25 @@ public class TranslatorManagementController : ApiController
             throw new ArgumentException("unknown status");
         }
 
-        var translator = _unitOfWork
-            .RepositoryFor<TranslatorRecord>()
+        var repository = _unitOfWork.RepositoryFor<TranslatorRecord>();
+
+        var translator = repository
             .GetByID(translatorId);
+
+        if(translator == null)
+        {
+           throw new EntityException<TranslatorRecord>(translator, "Not Found!");
+        }
 
         translator = translator with 
         {
             Status = newStatus
         };
 
+        repository.Update(translator);
+
         return _unitOfWork.Save() > 0 
             ? "updated" 
-            : throw new EntityException<TranslatorRecord>(translator, "Cannnot update!");
+            : throw new EntityException<TranslatorRecord>(translator, "Cannnot Update!");
     }
 }

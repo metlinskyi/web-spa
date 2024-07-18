@@ -11,14 +11,14 @@ public static class Extensions
 {
     public static IServiceCollection AddDb(this IServiceCollection services, string connectionString)
     {
-        services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-        services.AddTransient<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services.AddDbContext<AppDbContext>(options => {
                 options.UseSqlite(connectionString);
                 options.UseTriggers();
         })
-        .AddTransient<IAfterSaveTrigger<JobRecrod>, JobRecrodAfterSaveTrigger>();
+        .AddScoped<IAfterSaveTrigger<JobRecrod>, JobRecrodAfterSaveTrigger>();
     }
 
     public static IServiceCollection AddDbIdentity(this IServiceCollection services, string connectionString)

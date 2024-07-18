@@ -11,10 +11,19 @@ public class TranslationRecordProfile : Profile
     public TranslationRecordProfile()
     {
         CreateMap<TranslationJobModel,TranslationRecord>()
-            .ForMember(record=>record.Id, x=>x.MapFrom(model => Guid.Parse(model.Id)))
-            .ForMember(record=>record.Id, x=>x.MapFrom(model => Guid.Parse(model.Id)))
-            .ForMember(record=>record.OriginalContent, x=>x.MapFrom(x=>x.OriginalContent))
-            .ForMember(record=>record.TranslatedContent, x=>x.MapFrom(x=>x.TranslatedContent));
+
+            .ForMember(record => record.Id, 
+                x=>x.MapFrom(model => string.IsNullOrEmpty(model.Id) ? Guid.Parse(model.Id) : Guid.NewGuid()))
+
+            .ForMember(record => record.Id, 
+                x=>x.MapFrom(model => Guid.Parse(model.Id)))
+
+            .ForMember(record => record.OriginalContent, 
+                x=>x.MapFrom(model => model.OriginalContent))
+
+            .ForMember(record => record.TranslatedContent, 
+                x=>x.MapFrom(model => model.TranslatedContent))
+            ;
 
         CreateMap<TranslationRecord, TranslationJobModel>()
 

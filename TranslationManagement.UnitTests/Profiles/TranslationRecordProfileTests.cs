@@ -9,7 +9,12 @@ using Data.Management;
 
 public class TranslationRecordProfileTests
 {
-    [TestCase("","","","",0.0)]
+    [TestCase(
+        "c569fd34-1ae8-488b-91f3-5eff857f85e9",
+        "034c0409-ccfc-4ee7-a10b-ea003767478d",
+        "Original Content",
+        "Translated Content",
+        0.0)]
     public void Test1(string id, string customerId, string originalContent, string translatedContent, decimal price)
     {
         var mappingProfile = new TranslationRecordProfile();

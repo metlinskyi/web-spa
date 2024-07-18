@@ -28,7 +28,7 @@ internal class Repository<TEntity> : IRepository<TEntity>
 
     public virtual TEntity? GetByID(Guid id)
     {
-        return dbSet.Find(id);
+        return dbSet.AsNoTracking().Single(x=>x.Id == id);
     }
 
     public virtual Task<TEntity?> GetByIDAsync(Guid id)
@@ -65,8 +65,12 @@ internal class Repository<TEntity> : IRepository<TEntity>
     }
 
     public virtual void Update(TEntity entityToUpdate)
-    {
-        dbSet.Attach(entityToUpdate);
+    {   
+        if (context.Entry(entityToUpdate).State == EntityState.Detached)
+        {
+            dbSet.Attach(entityToUpdate);
+        }
+
         context.Entry(entityToUpdate).State = EntityState.Modified;
     }
 }

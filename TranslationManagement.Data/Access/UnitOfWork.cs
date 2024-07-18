@@ -34,9 +34,9 @@ internal class UnitOfWork : IUnitOfWork
        return _context.SaveChanges();
     }
 
-    public async Task<int> SaveAsync()
+    public Task<int> SaveAsync()
     {
-       return await _context.SaveChangesAsync();
+       return _context.SaveChangesAsync();
     }
 
     protected virtual void Dispose(bool disposing)
