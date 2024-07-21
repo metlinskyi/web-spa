@@ -65,18 +65,20 @@ public class TranslatorManagementController : ApiController
     }
     
     [HttpPost]
-    public string UpdateTranslatorStatus(Guid translatorId, TranslatorStatus newStatus = TranslatorStatus.Default)
+    public string UpdateTranslatorStatus(string translatorId, string newStatus = "")
     {
         _logger.LogInformation("User status update request: " + newStatus + " for user " + translatorId.ToString());
-        if (newStatus == TranslatorStatus.Default)
+        
+        TranslatorStatus status = Enum.Parse<TranslatorStatus>(newStatus);
+        if (status == TranslatorStatus.Default)
         {
             throw new ArgumentException("unknown status");
         }
 
+        Guid id = Guid.Parse(translatorId);
         var repository = _unitOfWork.RepositoryFor<TranslatorRecord>();
-
         var translator = repository
-            .GetByID(translatorId);
+            .GetByID(id);
 
         if(translator == null)
         {
@@ -85,7 +87,7 @@ public class TranslatorManagementController : ApiController
 
         translator = translator with 
         {
-            Status = newStatus
+            Status = status
         };
 
         repository.Update(translator);

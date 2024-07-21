@@ -63,9 +63,3 @@ export const $TranslatorModel = {
     },
     additionalProperties: false
 } as const;
-
-export const $TranslatorStatus = {
-    enum: [0, 1, 2, 3],
-    type: 'integer',
-    format: 'int32'
-} as const;

@@ -350,14 +350,16 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "nullable": true
             }
           },
           {
             "name": "newStatus",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/TranslatorStatus"
+              "type": "string",
+              "default": "",
+              "nullable": true
             }
           }
         ],
@@ -453,16 +455,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "TranslatorStatus": {
-        "enum": [
-          0,
-          1,
-          2,
-          3
-        ],
-        "type": "integer",
-        "format": "int32"
       }
     }
   }

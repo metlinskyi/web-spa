@@ -19,8 +19,6 @@ export type TranslatorModel = {
     creditCardNumber?: string | null;
 };
 
-export type TranslatorStatus = 0 | 1 | 2 | 3;
-
 export type GetApiV1JobsGetJobsResponse = Array<TranslationJobModel>;
 
 export type PostApiV1JobsCreateJobData = {
@@ -61,8 +59,8 @@ export type PostApiV1TranslatorsManagementAddTranslatorData = {
 export type PostApiV1TranslatorsManagementAddTranslatorResponse = boolean;
 
 export type PostApiV1TranslatorsManagementUpdateTranslatorStatusData = {
-    newStatus?: TranslatorStatus;
-    translatorId?: string;
+    newStatus?: string | null;
+    translatorId?: string | null;
 };
 
 export type PostApiV1TranslatorsManagementUpdateTranslatorStatusResponse = string;

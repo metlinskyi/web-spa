@@ -1,18 +1,16 @@
-using Asp.Versioning;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-
 namespace TranslationManagement.Api;
 
-using System.IO;
+using Asp.Versioning;
 using Data;
 using Data.Management;
 using External.ThirdParty.Services;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Notifications;
 using TranslationManagement.Payments;
 
@@ -29,7 +27,8 @@ public class Startup
     public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
-    {
+    {        
+        services.AddControllers();
         services.AddCors(options =>
         {   
             options.AddPolicy(ProductionSpecificOrigins, policy  =>
@@ -43,7 +42,6 @@ public class Startup
                 policy.AllowAnyHeader();         
             });
         });
-        services.AddControllers();
         services.AddApiVersioning(options =>
         {
             options.DefaultApiVersion = new ApiVersion(1);
