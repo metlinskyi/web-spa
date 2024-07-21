@@ -12,11 +12,15 @@ using Data;
 using Data.Management;
 using External.ThirdParty.Services;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using Notifications;
 using TranslationManagement.Payments;
 
 public class Startup
 {
+    const string ProductionSpecificOrigins = nameof(ProductionSpecificOrigins);
+    const string DevelopmentSpecificOrigins = nameof(DevelopmentSpecificOrigins);
+
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
@@ -26,6 +30,19 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddCors(options =>
+        {   
+            options.AddPolicy(ProductionSpecificOrigins, policy  =>
+            {
+                policy.WithOrigins("<domain>");
+            });
+            options.AddPolicy(DevelopmentSpecificOrigins, policy  =>
+            {
+                policy.AllowAnyOrigin();
+                policy.AllowAnyMethod();
+                policy.AllowAnyHeader();         
+            });
+        });
         services.AddControllers();
         services.AddApiVersioning(options =>
         {
@@ -54,6 +71,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        app.UseCors(env.IsProduction() ? ProductionSpecificOrigins : DevelopmentSpecificOrigins);
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TranslationManagement.Api v1"));
         app.UseDefaultFiles();
@@ -66,4 +84,3 @@ public class Startup
         });
     }
 }
-
