@@ -46,6 +46,6 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 
+## Open Api
 
 npx @hey-api/openapi-ts -i TranslationManagement.Api.json -o src/api
-npx generate-react-cli component Header --flat

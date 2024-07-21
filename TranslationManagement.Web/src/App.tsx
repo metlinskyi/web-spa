@@ -1,21 +1,17 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
-import Header from './components/Header';
-import Home from './pages/Home';
-import Translators from './pages/Translators';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import routes from './routes';
+import Layout from './components/Layout';
+import Page404 from './components/Page404';
 
 const App: React.FC = () => (
-  <Container>
-    <Header/>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/translators" element={<Translators />} />
-      </Routes>
-    </BrowserRouter>
-  </Container>
+  <RouterProvider router={createBrowserRouter([
+  {
+    element: <Layout />,
+    errorElement: <Page404 />,
+    children: routes
+  },
+  ])} />
 )
-
 export default App;

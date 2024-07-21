@@ -31,3 +31,22 @@
         --startup-project TranslationManagement.Api/TranslationManagement.Api.csproj \
         -- "Data Source=TranslationIdentityDatabase.db" 
 ```
+
+
+# Standalone update db
+```dotnetcli
+
+    dotnet ef migrations bundle \
+        -p TranslationManagement.Data/TranslationManagement.Data.csproj \
+        -c AppDbContext -o app.context -f \
+        -- "Data Source=TranslationAppDatabase.db" 
+
+    dotnet ef migrations bundle \
+        -p TranslationManagement.Data/TranslationManagement.Data.csproj \
+        -c UserDbContext -o user.context -f \
+        -- "Data Source=TranslationIdentityDatabase.db"  
+
+```
+
+./app.context -- "Data Source=TranslationAppDatabase.db" 
+

@@ -6,7 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { OpenAPI } from './api';
 
-OpenAPI.BASE = "http://localhost:5000";
+OpenAPI.BASE = process.env.REACT_APP_API_URL || "";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
