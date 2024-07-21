@@ -1,4 +1,13 @@
-# Run for dev
+# Development environment
+
+## Development tools
+```dotnetcli
+dotnet new tool-manifest
+dotnet tool install --global dotnet-ef
+dotnet tool install --global Swashbuckle.AspNetCore.Cli --version 6.4.0
+```
+
+## Run for development
 ```dotnetcli
     dotnet run --project TranslationManagement.Api/TranslationManagement.Api.csproj
 ```
