@@ -1,4 +1,5 @@
 namespace TranslationManagement.Data.Management;
+
 using Data;
 using Payments;
 

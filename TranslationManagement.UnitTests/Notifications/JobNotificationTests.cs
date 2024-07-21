@@ -1,14 +1,13 @@
+namespace TranslationManagement.UnitTests.Notifications;
+
+using Data.Management;
 using External.ThirdParty.Services;
+using Mocks;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 using TranslationManagement.Api.Notifications;
-
-namespace TranslationManagement.UnitTests.Notifications;
-
-using Data.Management;
-using Mocks;
 
 public class JobNotificationTests
 {

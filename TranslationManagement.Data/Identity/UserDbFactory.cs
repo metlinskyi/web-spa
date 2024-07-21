@@ -1,6 +1,5 @@
 namespace TranslationManagement.Data.Identity;
 
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 

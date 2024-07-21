@@ -1,21 +1,20 @@
-﻿using Asp.Versioning;
-using AutoMapper;
+﻿namespace TranslationManagement.Api.Controllers;
 
+using Asp.Versioning;
+using AutoMapper;
+using Data;
+using Data.Management;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Models;
+using Payments;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace TranslationManagement.Api.Controllers;
-
-using System.Threading.Tasks;
-using Data;
-using Data.Management;
-using Models;
-using Payments;
 
 [ApiVersion(1.0)]
 [ApiRoute("jobs/[action]")]

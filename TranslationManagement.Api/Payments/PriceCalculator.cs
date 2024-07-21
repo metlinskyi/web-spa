@@ -1,10 +1,9 @@
-using System;
-using System.Linq;
-
 namespace TranslationManagement.Payments;
 
 using Data;
 using Data.Management;
+using System;
+using System.Linq;
 
 internal class PriceCalculator : IPriceCalculator
 {

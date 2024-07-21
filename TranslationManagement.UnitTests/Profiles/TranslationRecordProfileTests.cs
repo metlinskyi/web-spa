@@ -1,11 +1,11 @@
 namespace TranslationManagement.UnitTests.Payments;
 
-using System;
-using NUnit.Framework;
-using AutoMapper;
-using Api.Profiles;
 using Api.Models;
+using Api.Profiles;
+using AutoMapper;
 using Data.Management;
+using NUnit.Framework;
+using System;
 
 public class TranslationRecordProfileTests
 {

@@ -1,16 +1,15 @@
-﻿using Asp.Versioning;
+﻿namespace TranslationManagement.Api.Controlers;
+
+using Asp.Versioning;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-
-namespace TranslationManagement.Api.Controlers;
-
-using System.Threading.Tasks;
 using Data;
 using Data.Management;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 [ApiVersion(1.0)]
 [ApiRoute("TranslatorsManagement/[action]")]

@@ -1,11 +1,10 @@
-using EntityFrameworkCore.Triggered;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace TranslationManagement.Data;
 
 using Access;
+using EntityFrameworkCore.Triggered;
 using Management;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 public static class Extensions
 {

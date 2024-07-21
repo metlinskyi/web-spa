@@ -1,8 +1,6 @@
 ﻿namespace TranslationManagement.Data.Management;
 
-using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 internal class AppDbContext : DbContext
 {

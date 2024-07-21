@@ -1,10 +1,9 @@
-using AutoMapper;
-
 namespace TranslationManagement.Api.Profiles;
 
-using System;
+using AutoMapper;
 using Data.Management;
 using Models;
+using System;
 
 public class TranslatorRecordProfile : Profile 
 {

@@ -10,8 +10,8 @@ dotnet tool restore
 
 ## Run for development
 ```dotnetcli
-    dotnet run --project TranslationManagement.Api/TranslationManagement.Api.csproj
-    dotnet watch --project TranslationManagement.Api/TranslationManagement.Api.csproj
+dotnet run --project TranslationManagement.Api/TranslationManagement.Api.csproj
+dotnet watch --project TranslationManagement.Api/TranslationManagement.Api.csproj
 ```
 
 # Docker

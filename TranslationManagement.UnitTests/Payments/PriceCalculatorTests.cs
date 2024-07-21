@@ -1,10 +1,9 @@
-using NUnit.Framework;
-using Moq;
-
 namespace TranslationManagement.UnitTests.Payments;
 
-using Mocks;
 using Data;
+using Mocks;
+using Moq;
+using NUnit.Framework;
 using TranslationManagement.Payments;
 
 public class PriceCalculatorTests
