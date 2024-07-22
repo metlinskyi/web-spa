@@ -6,7 +6,8 @@ import {
   postApiV1TranslatorsManagementUpdateTranslatorStatus
 } from '../api/services.gen';
 import { TranslatorModel } from '../api';
-import { Spinner, Table, Form, Button } from 'react-bootstrap';
+import { Spinner, Table, Form, Button, InputGroup } from 'react-bootstrap';
+import { isNullishCoalesce } from 'typescript';
 
 function Translators() {
     const statuses = ["Applicant","Certified", "Deleted"];
@@ -70,7 +71,7 @@ function Translators() {
                 <tr id={tr.id || ""} >
                   <td>{tr.name}</td>
                   <td>
-                      <Form.Select aria-label="Default select example" size='sm' id={tr.id || ""}  
+                      <Form.Select size='sm' id={tr.id || ""}  
                         onChange={ (event) => { 
                             onFetchUpdateTranslatorStatus(event.target.id, event.target.value);
                         }}>
@@ -89,11 +90,11 @@ function Translators() {
         <tfoot>
           <tr>
             <td>
-              <Form.Control width={30} size="sm" type="text" placeholder="Name" 
-                onChange={ (event) => { translator.name = event.target.value } } />
+                <Form.Control size="sm" type="text" placeholder="Name" name="Name" required
+                  onChange={ (event) => { translator.name = event.target.value } } />
             </td>
             <td>
-              <Form.Select aria-label="Default select example" size='sm'
+              <Form.Select size='sm'
                 onChange={ (event) => { translator.status = event.target.value }}>
                 {
                   statuses.filter(s=>s!="Deleted").map(s=><option value={s}>{s}</option>)
@@ -101,11 +102,11 @@ function Translators() {
               </Form.Select>
             </td>
             <td>
-              <Form.Control width={30} size="sm" type="text" placeholder="Hourly Rate" 
+              <Form.Control size="sm" type="text" placeholder="Hourly Rate" required
                 onChange={ (event) => { translator.hourlyRate = event.target.value } } />
             </td>
             <td>
-              <Form.Control width={30} size="sm" type="text" placeholder="Credit Card Number"
+              <Form.Control size="sm" type="text" placeholder="Credit Card Number" required
                 onChange={ (event) => { translator.creditCardNumber = event.target.value } }  />
             </td>
             <td>
@@ -116,7 +117,7 @@ function Translators() {
                       translators.push(translator);
                       setTranslator({ } as TranslatorModel);
                   }
-                } >+</Button>
+                }>+</Button>
             </td>
           </tr>
         </tfoot>

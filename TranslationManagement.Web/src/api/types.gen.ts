@@ -56,7 +56,7 @@ export type PostApiV1TranslatorsManagementAddTranslatorData = {
     requestBody?: TranslatorModel;
 };
 
-export type PostApiV1TranslatorsManagementAddTranslatorResponse = boolean;
+export type PostApiV1TranslatorsManagementAddTranslatorResponse = string;
 
 export type PostApiV1TranslatorsManagementUpdateTranslatorStatusData = {
     newStatus?: string | null;
@@ -137,7 +137,7 @@ export type $OpenApiTs = {
                 /**
                  * Success
                  */
-                200: boolean;
+                200: string;
             };
         };
     };

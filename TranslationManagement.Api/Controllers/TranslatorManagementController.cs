@@ -52,7 +52,7 @@ public class TranslatorManagementController : ApiController
     }
 
     [HttpPost]
-    public async Task<bool> AddTranslator(TranslatorModel translator)
+    public async Task<string> AddTranslator(TranslatorModel translator)
     {
         var record = _mapper.Map<TranslatorModel, TranslatorRecord>(translator);
 
@@ -60,7 +60,9 @@ public class TranslatorManagementController : ApiController
             .RepositoryFor<TranslatorRecord>()
             .InsertAsync(record);
 
-        return await _unitOfWork.SaveAsync() > 0;
+        return await _unitOfWork.SaveAsync() > 0 
+            ? record.Id.ToString() 
+            : throw new EntityException<TranslatorRecord>(record, "Cannnot Update!");
     }
     
     [HttpPost]

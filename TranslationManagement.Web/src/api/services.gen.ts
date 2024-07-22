@@ -88,7 +88,7 @@ export const getApiV1TranslatorsManagementGetTranslatorsByName = (data: GetApiV1
 /**
  * @param data The data for the request.
  * @param data.requestBody
- * @returns boolean Success
+ * @returns string Success
  * @throws ApiError
  */
 export const postApiV1TranslatorsManagementAddTranslator = (data: PostApiV1TranslatorsManagementAddTranslatorData = {}): CancelablePromise<PostApiV1TranslatorsManagementAddTranslatorResponse> => { return __request(OpenAPI, {
