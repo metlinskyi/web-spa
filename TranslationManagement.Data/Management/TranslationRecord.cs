@@ -6,7 +6,7 @@ public sealed record TranslationRecord
     string OriginalContent,
     string TranslatedContent
 ) : Entity(Id){
-    public CustomerRecord Customer { get; init; }
-    public JobRecrod Job { get; init; }
+    public string CustomerName { get; init; }
     public decimal Price { get; init; }
+    public JobRecrod Job { get; init; }
 }

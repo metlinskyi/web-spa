@@ -3,6 +3,7 @@ namespace TranslationManagement.Api.Notifications;
 using Data.Management;
 using External.ThirdParty.Services;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 internal class JobNotification : INotification<JobRecrod>
@@ -20,10 +21,7 @@ internal class JobNotification : INotification<JobRecrod>
 
     public async Task Send(JobRecrod value)
     {
-        while  (! await _notificationService.SendNotification("Job created: " + value.Id))
-        {
-        }
-
+        while (! await _notificationService.SendNotification("Job created: " + value.Id));
         _logger.LogInformation("New job notification sent");
     }
 }

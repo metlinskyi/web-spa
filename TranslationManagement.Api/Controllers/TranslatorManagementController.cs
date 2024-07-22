@@ -84,12 +84,10 @@ public class TranslatorManagementController : ApiController
            throw new EntityException<TranslatorRecord>(translator, "Not Found!");
         }
 
-        translator = translator with 
+        repository.Update(translator with 
         {
             Status = status
-        };
-
-        repository.Update(translator);
+        });
 
         return _unitOfWork.Save() > 0 
             ? "updated" 

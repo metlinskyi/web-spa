@@ -1,3 +1,4 @@
+
 namespace TranslationManagement.Api.Models;
 
 public class TranslationJobModel : ApiModel

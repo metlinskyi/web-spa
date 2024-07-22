@@ -53,6 +53,7 @@ public class TranslationJobController : ApiController
         var record = _mapper.Map<TranslationRecord>(job);
         record = record with
         {
+            Job = _mapper.Map<JobRecrod>(job),
             Price = _priceCalculator.Translation(PriceType.PerCharacter, job.OriginalContent)
         };
         
@@ -69,7 +70,6 @@ public class TranslationJobController : ApiController
         using var reader = new StreamReader(file.OpenReadStream());
         string content;
 
-
         if (file.FileName.EndsWith(".txt"))
         {
             content = reader.ReadToEnd();
@@ -85,14 +85,12 @@ public class TranslationJobController : ApiController
             throw new NotSupportedException("unsupported file");
         }
 
-        var newJob = new TranslationJobModel()
+        return await CreateJob(new TranslationJobModel
         {
             OriginalContent = content,
             TranslatedContent = "",
             CustomerName = customer,
-        };
-
-        return await CreateJob(newJob);
+        });
     }
 
     [HttpPost]
@@ -104,11 +102,19 @@ public class TranslationJobController : ApiController
         {
             throw new ArgumentException("invalid status");
         }
-
-         var job = _unitOfWork
-            .RepositoryFor<JobRecrod>()
+        
+        var translator = _unitOfWork
+            .RepositoryFor<TranslatorRecord>()
+            .GetByID(translatorId);
+        if(translator.Status != TranslatorStatus.Certified)
+        {
+            throw new ArgumentException($"The translator must be {TranslatorStatus.Certified}!");     
+        }
+        
+        var repository = _unitOfWork
+            .RepositoryFor<JobRecrod>();
+        var job = repository
             .GetByID(jobId);
-
 
         bool isInvalidStatusChange = (job.Status == JobStatus.New && newStatus == JobStatus.Completed) ||
                                         job.Status == JobStatus.Completed || newStatus == JobStatus.New;
@@ -117,10 +123,10 @@ public class TranslationJobController : ApiController
             throw new ArgumentException("invalid status change");
         }
 
-        job = job with
+        repository.Update(job with
         {
             Status = newStatus
-        };
+        });
 
         return _unitOfWork.Save() > 0 
             ? "updated" 
