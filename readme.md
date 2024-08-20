@@ -72,3 +72,9 @@ npx @hey-api/openapi-ts -i TranslationManagement.Api.json -o src/api
 
 I did not implement a lot of things like validation or DDD (I prefer this approach on the backend) because it's only for 3 days.
 My development environment is Linux and VS code that's why I prefer to use CLI tools and this knowledge helps to do a good CI/CD pipeline. 
+
+
+&nbsp;
+============
+&copy; [The Best Software Engineer In The Universe!](https://www.linkedin.com/in/metlinskyi/)
+
