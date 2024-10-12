@@ -6,5 +6,4 @@ namespace TranslationManagement;
 
 public static class Extensions
 {
-
 }

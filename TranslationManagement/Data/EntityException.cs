@@ -7,11 +7,12 @@ public class EntityException : Exception
     }
 }
 
-
 public class EntityException<TEntity> : EntityException 
     where TEntity : Entity
 {
+
     public EntityException(TEntity entity, string reason) : base(reason)
     {
+        Data[nameof(TEntity)] = entity;
     }
 }

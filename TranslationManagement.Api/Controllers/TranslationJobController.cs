@@ -1,135 +1,83 @@
 ﻿namespace TranslationManagement.Api.Controllers;
 
 using Asp.Versioning;
-using AutoMapper;
-using Data;
 using Data.Management;
+using Domain.Translation.Commands;
+using Domain.Translation.Notifications;
+using Domain.Translation.Queries;
+using Files;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models;
-using Payments;
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-
 
 [ApiVersion(1.0)]
 [ApiRoute("jobs/[action]")]
 public class TranslationJobController : ApiController
 {
-    private readonly  ILogger<TranslationJobController> _logger;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly IPriceCalculator _priceCalculator;
- 
+    private readonly ILogger<TranslationJobController> _logger;
+    private readonly ISender _sender;
+    private readonly IMediator _mediator;
+    private readonly IFileServiceFactory _fileServiceFactory;
+
     public TranslationJobController(
         ILogger<TranslationJobController> logger,
-        IUnitOfWork unitOfWork,
-        IMapper mapper,
-        IPriceCalculator priceCalculator) 
+        ISender sender,
+        IMediator mediator,
+        IFileServiceFactory fileServiceFactory) 
     {        
         _logger = logger;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _priceCalculator = priceCalculator;
+        _sender = sender;
+        _mediator = mediator;
+        _fileServiceFactory = fileServiceFactory;
     }
 
     [HttpGet]
-    public TranslationJobModel[] GetJobs()
+    public async Task<IEnumerable<TranslationJobModel>> GetJobs()
     {
-        return _unitOfWork
-            .RepositoryFor<TranslationRecord>()
-            .Get(nameof(TranslationRecord.Job))
-            .Select(_mapper.Map<TranslationRecord, TranslationJobModel>)
-            .ToArray();
+        return await _sender.Send(new ListTranslationJobQuery());
     }
 
     [HttpPost]
-    public async Task<bool> CreateJob(TranslationJobModel job)
+    public async Task<bool> CreateJob(CreateJobCommand command)
     {
-        var record = _mapper.Map<TranslationRecord>(job);
-        record = record with
-        {
-            Job = _mapper.Map<JobRecrod>(job),
-            Price = _priceCalculator.Translation(PriceType.PerCharacter, job.OriginalContent)
-        };
-        
-        await _unitOfWork
-            .RepositoryFor<TranslationRecord>()
-            .InsertAsync(record);
+        _logger.LogInformation($"Create job for {command.CustomerName}");
 
-        return _unitOfWork.Save() > 0;
+        var id = await _mediator.Send(command);
+        if (id == Guid.Empty) return false;
+        await _mediator.Publish(new CreateJobNotification(id));
+
+        return true;
     }
 
     [HttpPost]
     public async Task<bool> CreateJobWithFile(IFormFile file, string customer)
     {
-        using var reader = new StreamReader(file.OpenReadStream());
-        string content;
+        _logger.LogInformation($"Create job with file: {file.FileName}");
 
-        if (file.FileName.EndsWith(".txt"))
-        {
-            content = reader.ReadToEnd();
-        }
-        else if (file.FileName.EndsWith(".xml"))
-        {
-            var xdoc = XDocument.Parse(reader.ReadToEnd());
-            content = xdoc.Root.Element("Content").Value;
-            customer = xdoc.Root.Element("Customer").Value.Trim();
-        }
-        else
-        {
-            throw new NotSupportedException("unsupported file");
-        }
+        var command = await _fileServiceFactory
+            .Create(file.FileName.Split('.').Last())
+            .SaveAs(file.OpenReadStream(), new CreateJobCommand(
+                Guid.Empty.ToString(), 
+                customer, 
+                JobStatus.New.ToString(), 
+                string.Empty, 
+                string.Empty, 
+                0));
 
-        return await CreateJob(new TranslationJobModel
-        {
-            OriginalContent = content,
-            TranslatedContent = "",
-            CustomerName = customer,
-        });
+        return await CreateJob(command);
     }
 
     [HttpPost]
-    public string UpdateJobStatus(Guid jobId, Guid translatorId, JobStatus newStatus = JobStatus.Default)
+    public async Task<string> UpdateJobStatus(Guid jobId, Guid translatorId, JobStatus newStatus = JobStatus.Default)
     {
-        _logger.LogInformation("Job status update request received: " + newStatus + " for job " + jobId.ToString() + " by translator " + translatorId);
+        _logger.LogInformation($"Job status update request received: {newStatus} for job {jobId.ToString()} by translator {translatorId}");
 
-        if (newStatus == JobStatus.Default)
-        {
-            throw new ArgumentException("invalid status");
-        }
-        
-        var translator = _unitOfWork
-            .RepositoryFor<TranslatorRecord>()
-            .GetByID(translatorId);
-        if(translator.Status != TranslatorStatus.Certified)
-        {
-            throw new ArgumentException($"The translator must be {TranslatorStatus.Certified}!");     
-        }
-        
-        var repository = _unitOfWork
-            .RepositoryFor<JobRecrod>();
-        var job = repository
-            .GetByID(jobId);
-
-        bool isInvalidStatusChange = (job.Status == JobStatus.New && newStatus == JobStatus.Completed) ||
-                                        job.Status == JobStatus.Completed || newStatus == JobStatus.New;
-        if (isInvalidStatusChange)
-        {
-            throw new ArgumentException("invalid status change");
-        }
-
-        repository.Update(job with
-        {
-            Status = newStatus
-        });
-
-        return _unitOfWork.Save() > 0 
-            ? "updated" 
-            : throw new EntityException<JobRecrod>(job, "Cannnot update!");
+        return await _mediator.Send(new UpdateJobStatusCommand(jobId, translatorId, newStatus));
     }
 }

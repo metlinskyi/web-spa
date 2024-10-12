@@ -52,17 +52,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TranslationJobModel"
+                "$ref": "#/components/schemas/CreateJobCommand"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TranslationJobModel"
+                "$ref": "#/components/schemas/CreateJobCommand"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TranslationJobModel"
+                "$ref": "#/components/schemas/CreateJobCommand"
               }
             }
           }
@@ -391,6 +391,36 @@
   "components": {
     "schemas": {
       "TranslationJobModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalContent": {
+            "type": "string",
+            "nullable": true
+          },
+          "translatedContent": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateJobCommand": {
         "type": "object",
         "properties": {
           "id": {

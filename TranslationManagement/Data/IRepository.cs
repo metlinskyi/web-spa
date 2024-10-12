@@ -1,8 +1,9 @@
 namespace TranslationManagement.Data;
 
-public interface IRepository
-{
-}
+/// <summary>
+/// The placeholder of repositories
+/// </summary>
+public interface IRepository{}
 
 public interface IRepository<TEntity> : IRepository where TEntity : Entity
 {
