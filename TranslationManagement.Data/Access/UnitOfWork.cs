@@ -1,59 +1,25 @@
 namespace TranslationManagement.Data.Access;
 
 using Management;
+using Microsoft.Extensions.DependencyInjection;
 
-internal class UnitOfWork : IUnitOfWork
+internal class UnitOfWork(
+    AppDbContext context,
+    IServiceProvider provider
+    ) : IUnitOfWork, IDisposable
 {
-    private readonly object _locker = new object();
-    private bool _disposed = false;
-    private readonly IDictionary<Type, IRepository> _repositories;
-    private readonly AppDbContext _context;
-    public UnitOfWork(AppDbContext context)
-    {       
-        _repositories = new Dictionary<Type, IRepository>();
-        _context = context;
-    }
-
     public IRepository<TEntity> RepositoryFor<TEntity>() where TEntity : Entity
     {
-
-        if(!_repositories.TryGetValue(typeof(TEntity), out IRepository repository))
-        {
-            repository = new Repository<TEntity>(_context);
-            if(!_repositories.TryAdd(typeof(TEntity), repository))
-            {
-                throw new EntityException("Cannot add repository");
-            }
-        }
-
-        return (IRepository<TEntity>) repository;
+        return provider.GetRequiredService<IRepository<TEntity>>();
     }
 
-    public int Save()
+    public async Task<int> Save()
     {
-       return _context.SaveChanges();
-    }
-
-    public Task<int> SaveAsync()
-    {
-       return _context.SaveChangesAsync();
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
-        }
-        _disposed = true;
+       return await context.SaveChangesAsync();
     }
 
     public void Dispose()
     {
-        Dispose(true);
-        GC.SuppressFinalize(this);
+        context.Dispose();
     }
 }

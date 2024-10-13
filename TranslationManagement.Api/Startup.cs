@@ -14,17 +14,12 @@ using Middleware;
 using Payments;
 using TranslationManagement.Notifications;
 
-public class Startup
+public class Startup(IConfiguration configuration)
 {
     const string ProductionSpecificOrigins = nameof(ProductionSpecificOrigins);
     const string DevelopmentSpecificOrigins = nameof(DevelopmentSpecificOrigins);
 
-    public Startup(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
+    public IConfiguration Configuration => configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {        

@@ -4,10 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 internal static class Extensions
 {
-    public static IServiceCollection AddPayments(this IServiceCollection services)
+    public static IServiceCollection AddPayments(this IServiceCollection _)
     {
-        services.AddSingleton<IPriceCalculator, PriceCalculator>();
-
-        return services;
+        return _
+                .AddSingleton<IPriceCalculator, PriceCalculator>()
+                ;
     }
 }

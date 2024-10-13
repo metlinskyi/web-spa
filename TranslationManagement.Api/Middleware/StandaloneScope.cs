@@ -4,15 +4,10 @@ using TranslationManagement.Middleware;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-internal class StandaloneScope : IStandaloneScope
+internal class StandaloneScope(
+    IServiceProvider serviceProvider
+    ) : IStandaloneScope
 {
-    private readonly IServiceProvider serviceProvider;
-
-    public StandaloneScope(IServiceProvider serviceProvider)
-    {
-        this.serviceProvider = serviceProvider;
-    }
-
     public TResult UseFor<TService, TResult>(Func<TService, TResult> func) where TService : notnull
     {
         TResult result = default;

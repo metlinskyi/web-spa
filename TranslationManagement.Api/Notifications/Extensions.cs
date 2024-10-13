@@ -7,11 +7,11 @@ using Data.Management;
 
 internal static class Extensions
 {
-    public static IServiceCollection AddNotifications(this IServiceCollection services)
+    public static IServiceCollection AddNotifications(this IServiceCollection _)
     {
-        services.AddTransient<INotificationService, UnreliableNotificationService>();
-        services.AddTransient<INotification<JobRecrod>, JobNotification>();
-
-        return services;
+        return _ 
+                .AddTransient<INotificationService, UnreliableNotificationService>()
+                .AddTransient<INotification<JobRecrod>, JobNotification>()
+                ;
     }
 }

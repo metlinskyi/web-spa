@@ -10,12 +10,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class ListProductsQueryHandler(AppDbContext context, IMapper mapper) 
-    : IRequestHandler<ListTranslationJobQuery, IEnumerable<TranslationJobModel>>
+public class ListProductsQueryHandler(
+    AppDbContext context, 
+    IMapper mapper
+    ) : IRequestHandler<ListTranslationJobQuery, IEnumerable<TranslationJobModel>>
 {
-    private readonly AppDbContext context = context;
-    private readonly IMapper mapper = mapper;
-
     public async Task<IEnumerable<TranslationJobModel>> Handle(ListTranslationJobQuery request, CancellationToken cancellationToken)
     {
         var result = await context.Translations.ToArrayAsync();

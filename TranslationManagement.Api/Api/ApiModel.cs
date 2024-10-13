@@ -1,6 +1,6 @@
 namespace TranslationManagement.Api;
 
-public abstract class ApiModel
-{
-
-}
+/// <summary>
+/// The plaseholder of public models
+/// </summary>
+public abstract class ApiModel {}

@@ -4,11 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class Extensions
 {
-    public static IServiceCollection AddFileServices(this IServiceCollection services)
+    public static IServiceCollection AddFileServices(this IServiceCollection _)
     {
-        return services
-            .AddScoped<IFileServiceFactory, FileServiceFactory>()
-            .AddKeyedTransient<IFileService, CreateJobWithTxt>("txt")
-            .AddKeyedTransient<IFileService, CreateJobWithXml>("xml");
+        return _
+                .AddScoped<IFileServiceFactory, FileServiceFactory>()
+                .AddKeyedTransient<IFileService, CreateJobWithTxt>("txt")
+                .AddKeyedTransient<IFileService, CreateJobWithXml>("xml")
+                ;
     }
 }

@@ -5,93 +5,83 @@ using AutoMapper;
 using Data;
 using Data.Management;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 [ApiVersion(1.0)]
 [ApiRoute("TranslatorsManagement/[action]")]
-public class TranslatorManagementController : ApiController
-{
-    public static readonly string[] TranslatorStatuses = { "Applicant", "Certified", "Deleted" };
-    private readonly ILogger<TranslatorManagementController> _logger;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-
-    public TranslatorManagementController(
+public class TranslatorManagementController(
         ILogger<TranslatorManagementController> logger,
         IUnitOfWork unitOfWork,
-        IMapper mapper) 
-    {
-        _logger = logger;
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
+        IMapper mapper
+    ) : ApiController
+{
+    public static readonly string[] TranslatorStatuses = { "Applicant", "Certified", "Deleted" };
 
     [HttpGet]
-    public TranslatorModel[] GetTranslators()
+    public async Task<IEnumerable<TranslatorModel>> GetTranslators()
     {
-        return _unitOfWork
+        return (await unitOfWork
             .RepositoryFor<TranslatorRecord>()
             .Get()
-            .Select(_mapper.Map<TranslatorRecord, TranslatorModel>)
-            .ToArray();
+            .ToArrayAsync())
+            .Select(mapper.Map<TranslatorRecord, TranslatorModel>);
     }
 
     [HttpGet]
-    public TranslatorModel[] GetTranslatorsByName(string name)
+    public async Task<IEnumerable<TranslatorModel>> GetTranslatorsByName(string name)
     {
-        return _unitOfWork
+        return (await unitOfWork
             .RepositoryFor<TranslatorRecord>()
             .Get()
             .Where(t => t.Name == name)
-            .Select(_mapper.Map<TranslatorRecord, TranslatorModel>)
-            .ToArray();
+            .ToArrayAsync())
+            .Select(mapper.Map<TranslatorRecord, TranslatorModel>);
     }
 
     [HttpPost]
     public async Task<string> AddTranslator(TranslatorModel translator)
     {
-        var record = _mapper.Map<TranslatorModel, TranslatorRecord>(translator);
+        var record = mapper.Map<TranslatorModel, TranslatorRecord>(translator);
 
-        await _unitOfWork
+        unitOfWork
             .RepositoryFor<TranslatorRecord>()
-            .InsertAsync(record);
+            .Insert(record);
 
-        return await _unitOfWork.SaveAsync() > 0 
+        return await unitOfWork.Save() > 0 
             ? record.Id.ToString() 
             : throw new EntityException<TranslatorRecord>(record, "Cannnot Update!");
     }
     
     [HttpPost]
-    public string UpdateTranslatorStatus(string translatorId, string newStatus = "")
+    public async Task<string> UpdateTranslatorStatus(string translatorId, string newStatus = "")
     {
-        _logger.LogInformation("User status update request: " + newStatus + " for user " + translatorId.ToString());
+        logger.LogInformation("User status update request: " + newStatus + " for user " + translatorId.ToString());
         
-        TranslatorStatus status = Enum.Parse<TranslatorStatus>(newStatus);
+        var id = Guid.Parse(translatorId);
+        if (id == Guid.Empty)
+            throw new ArgumentException("Invalid format", nameof(translatorId));
+
+        var status = Enum.Parse<TranslatorStatus>(newStatus);
         if (status == TranslatorStatus.Default)
-        {
-            throw new ArgumentException("unknown status");
-        }
+            throw new ArgumentException("Unknown status", nameof(newStatus));
 
-        Guid id = Guid.Parse(translatorId);
-        var repository = _unitOfWork.RepositoryFor<TranslatorRecord>();
-        var translator = repository
-            .GetByID(id);
-
-        if(translator == null)
-        {
+        var repository = unitOfWork.RepositoryFor<TranslatorRecord>();
+        var translator = await repository.GetBy(x=> x.Id == id);
+        if (translator == null)
            throw new EntityException<TranslatorRecord>(translator, "Not Found!");
-        }
 
         repository.Update(translator with 
         {
             Status = status
         });
 
-        return _unitOfWork.Save() > 0 
+        return await unitOfWork.Save() > 0 
             ? "updated" 
             : throw new EntityException<TranslatorRecord>(translator, "Cannnot Update!");
     }

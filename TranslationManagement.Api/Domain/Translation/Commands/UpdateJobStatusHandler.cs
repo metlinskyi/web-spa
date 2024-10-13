@@ -8,8 +8,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class UpdateJobStatusHandler(AppDbContext context) 
-    : IRequestHandler<UpdateJobStatusCommand, string>
+public class UpdateJobStatusHandler(
+    AppDbContext context
+    ) : IRequestHandler<UpdateJobStatusCommand, string>
 {
     public async Task<string> Handle(UpdateJobStatusCommand command, CancellationToken cancellationToken)
     {

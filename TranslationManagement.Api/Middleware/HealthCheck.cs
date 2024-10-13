@@ -5,15 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 
-internal class HealthCheck : IHealthCheck
+internal class HealthCheck(
+    ILogger<HealthCheck> logger
+    ) : IHealthCheck
 {
-    private readonly ILogger<HealthCheck> logger;
-
-    public HealthCheck(ILogger<HealthCheck> logger)
-    {
-        this.logger = logger;
-    }
-
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context, 
         CancellationToken cancellationToken = default)

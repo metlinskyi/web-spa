@@ -11,11 +11,9 @@ using System.Threading.Tasks;
 public class CreateProductCommandHandler(
     AppDbContext context, 
     IMapper mapper,
-    IPriceCalculator calculator) 
-    : IRequestHandler<CreateJobCommand, Guid>
+    IPriceCalculator calculator
+    ) : IRequestHandler<CreateJobCommand, Guid>
 {
-    private readonly IPriceCalculator calculator = calculator;
-
     public async Task<Guid> Handle(CreateJobCommand command, CancellationToken cancellationToken)
     {
         var record = mapper.Map<TranslationRecord>(command);

@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 namespace TranslationManagement.Data;
 
 /// <summary>
@@ -7,19 +9,9 @@ public interface IRepository{}
 
 public interface IRepository<TEntity> : IRepository where TEntity : Entity
 {
-    IEnumerable<TEntity> Get(params string[] includeProperties);
-
-    TEntity? GetByID(Guid id);    
-
-    Task<TEntity?> GetByIDAsync(Guid id);
-
-    void Insert(TEntity entity);
-        
-    Task InsertAsync(TEntity entity);
-
-    void Delete(Guid id);
-
-    void Delete(TEntity entityToDelete);
-
-    void Update(TEntity entityToUpdate);
+    IQueryable<TEntity> Get(params string[] includeProperties);
+    Task<TEntity?> GetBy(Expression<Func<TEntity, bool>> predicate);
+    TEntity Insert(TEntity entity);
+    TEntity Update(TEntity entity);
+    TEntity Delete(TEntity entity);
 }

@@ -6,20 +6,16 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoMapper;
 
-internal class CreateJobWithXml : IFileService
+internal class CreateJobWithXml(
+    IMapper maper
+    ) : IFileService
 {
-    private readonly IMapper maper;
-
-    public CreateJobWithXml(IMapper maper)
-    {
-        this.maper = maper;
-    }
-
     public async Task<T> SaveAs<T>(Stream stream, T result)
     {
-        using var reader = new StreamReader(stream);
+        XDocument doc = null;
 
-        var doc = XDocument.Parse(await reader.ReadToEndAsync());
+        using(var reader = new StreamReader(stream))
+            doc = XDocument.Parse(await reader.ReadToEndAsync());
 
         return maper.Map(new CreateJobWith
         {

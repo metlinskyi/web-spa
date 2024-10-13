@@ -38,7 +38,7 @@ public class JobNotificationTests
                 };
             });
 
-        var sut = new JobNotification(notificationServiceMock.Object,loggerMock.Object);
+        var sut = new JobNotification(loggerMock.Object, notificationServiceMock.Object);
 
         try
         {
