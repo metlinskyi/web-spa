@@ -23,7 +23,8 @@ public class Startup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {        
-        services.AddLogging(config => config.AddConsole())
+        services
+                .AddLogging(config => config.AddConsole())
                 .AddDb("Data Source=TranslationAppDatabase.db")
                 .AddDbIdentity("Data Source=TranslationIdentityDatabase.db")
                 .AddAutoMapper(GetType().Assembly)
@@ -35,11 +36,8 @@ public class Startup(IConfiguration configuration)
                 .AddSwaggerGen(c =>
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "TranslationManagement.Api", Version = "v1" });
-                });
-
-        services.AddControllers();
-
-        services.AddCors(options =>
+                })
+                .AddCors(options =>
                 {   
                     options.AddPolicy(ProductionSpecificOrigins, policy  =>
                     {
@@ -51,8 +49,10 @@ public class Startup(IConfiguration configuration)
                         policy.AllowAnyMethod();
                         policy.AllowAnyHeader();         
                     });
-                });
+                })
+                ;
 
+        services.AddControllers();
         services.AddApiVersioning(options =>
                 {
                     options.DefaultApiVersion = new ApiVersion(1);
@@ -71,15 +71,17 @@ public class Startup(IConfiguration configuration)
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {       
-        app.UseCors(env.IsProduction() ? ProductionSpecificOrigins : DevelopmentSpecificOrigins);
-        app.UseDefaultFiles();
-        app.UseStaticFiles();
-        app.UseRouting();
-        app.UseAuthorization();
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
-        app.UseHealthChecks("/HealthCheck");
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TranslationManagement.Api v1"));
+        app
+            .UseCors(env.IsProduction() ? ProductionSpecificOrigins : DevelopmentSpecificOrigins)
+            .UseDefaultFiles()
+            .UseStaticFiles()
+            .UseRouting()
+            .UseAuthorization()
+            .UseEndpoints(endpoints => endpoints.MapControllers())
+            .UseHealthChecks("/HealthCheck")
+            .UseSwagger()
+            .UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TranslationManagement.Api v1"))
+            ;
 
         app.ApplicationServices.GetRequiredService<IWarmUp>();
     }
