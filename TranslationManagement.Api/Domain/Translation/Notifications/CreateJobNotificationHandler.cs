@@ -11,7 +11,7 @@ public class CreateJobNotificationHandler(
 {
     public Task Handle(CreateJobNotification notification, CancellationToken cancellationToken)
     {
-        logger.LogInformation($"handling notification for product creation with id : {notification.Id}. assigning stocks.");
+        logger.LogInformation($"The notification was complited for job {notification.Id}");
         return Task.CompletedTask;
     }
 }
